@@ -16,16 +16,12 @@ public class StudyCafeLockerPass {
         return new StudyCafeLockerPass(passType, duration, price);
     }
 
-    public StudyCafePassType getPassType() {
-        return passType;
+    public boolean isSamePassType(StudyCafePassType type) {
+        return this.passType == type;
     }
 
-    public int getDuration() {
-        return duration;
-    }
-
-    public int getPrice() {
-        return price;
+    public boolean isSameDuration(int duration) {
+        return this.duration == duration;
     }
 
     public String display() {
@@ -39,6 +35,18 @@ public class StudyCafeLockerPass {
             return String.format("%s주권 - %d원", duration, price);
         }
         return "";
+    }
+
+    public StudyCafePassType getPassType() {
+        return passType;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public int getPrice() {
+        return price;
     }
 
 }

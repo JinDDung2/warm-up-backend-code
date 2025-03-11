@@ -21,7 +21,6 @@ public class StudyCafePassMachine {
         try {
             outputHandler.showWelcomeMessage();
             outputHandler.showAnnouncement();
-            outputHandler.askPassTypeSelection();
 
             StudyCafePass selectedPass = getPass();
 
@@ -39,13 +38,30 @@ public class StudyCafePassMachine {
 
     }
 
-    private Optional<StudyCafeLockerPass> getLockerPass(StudyCafePass pass) {
+    private StudyCafePass getPass() {
+        outputHandler.askPassTypeSelection();
 
-        if (pass.getPassType() != StudyCafePassType.FIXED) {
+        StudyCafePassType passType = inputHandler.getPassTypeSelectingUserAction();
+        List<StudyCafePass> passCandidates = getPassesBy(passType);
+
+        outputHandler.showPassListForSelection(passCandidates);
+        return inputHandler.getSelectPass(passCandidates);
+    }
+
+    private List<StudyCafePass> getPassesBy(StudyCafePassType type) {
+        List<StudyCafePass> allPasses = studyCafeFileHandler.readStudyCafePasses();
+        return allPasses.stream()
+                .filter(pass -> pass.isSameType(type))
+                .toList();
+    }
+
+    private Optional<StudyCafeLockerPass> getLockerPass(StudyCafePass selectedPass) {
+
+        if (selectedPass.cannotUseLocker()) {
             return Optional.empty();
         }
 
-        StudyCafeLockerPass lockerPassCandidate = getLockerPassCandidateBy(pass);
+        StudyCafeLockerPass lockerPassCandidate = getLockerPassCandidateBy(selectedPass);
 
         if (lockerPassCandidate != null) {
             outputHandler.askLockerPass(lockerPassCandidate);
@@ -63,28 +79,9 @@ public class StudyCafePassMachine {
         List<StudyCafeLockerPass> allLockerPasses = studyCafeFileHandler.readLockerPasses();
 
         return allLockerPasses.stream()
-                .filter(lockerPass ->
-                        lockerPass.getPassType() == pass.getPassType()
-                                && lockerPass.getDuration() == pass.getDuration()
-                )
+                .filter(pass::isSameDurationType)
                 .findFirst()
                 .orElse(null);
-    }
-
-    private StudyCafePass getPass() {
-        StudyCafePassType passType = inputHandler.getPassTypeSelectingUserAction();
-
-        List<StudyCafePass> passCandidates = getPassesBy(passType);
-
-        outputHandler.showPassListForSelection(passCandidates);
-        return inputHandler.getSelectPass(passCandidates);
-    }
-
-    private List<StudyCafePass> getPassesBy(StudyCafePassType type) {
-        List<StudyCafePass> allPasses = studyCafeFileHandler.readStudyCafePasses();
-        return allPasses.stream()
-                .filter(pass -> pass.getPassType() == type)
-                .toList();
     }
 
 }
