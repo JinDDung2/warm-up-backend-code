@@ -1,4 +1,4 @@
-package misson4;
+package main.misson4;
 
 public class Member {
 
