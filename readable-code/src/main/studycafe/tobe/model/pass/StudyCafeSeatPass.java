@@ -7,17 +7,17 @@ public class StudyCafeSeatPass implements StudyCafePass{
     private final StudyCafePassType passType;
     private final int duration;
     private final int price;
-    private final double discountRate;
+    private final DiscountPolicy discountPolicy;
 
-    private StudyCafeSeatPass(StudyCafePassType passType, int duration, int price, double discountRate) {
+    private StudyCafeSeatPass(StudyCafePassType passType, int duration, int price, DiscountPolicy discountPolicy) {
         this.passType = passType;
         this.duration = duration;
         this.price = price;
-        this.discountRate = discountRate;
+        this.discountPolicy = discountPolicy;
     }
 
-    public static StudyCafeSeatPass of(StudyCafePassType passType, int duration, int price, double discountRate) {
-        return new StudyCafeSeatPass(passType, duration, price, discountRate);
+    public static StudyCafeSeatPass of(StudyCafePassType passType, int duration, int price, DiscountPolicy discountPolicy) {
+        return new StudyCafeSeatPass(passType, duration, price, discountPolicy);
     }
 
     public boolean isSameDurationType(StudyCafeLockerPass lockerPass) {
@@ -31,6 +31,18 @@ public class StudyCafeSeatPass implements StudyCafePass{
 
     public boolean cannotUseLocker() {
         return this.passType.isNotLockerType();
+    }
+
+    public boolean isTwelveWeeksPass() {
+        return this.duration == 12;
+    }
+
+    public boolean isWeeklyPassOverTwoWeeks() {
+        return this.passType == StudyCafePassType.WEEKLY && this.duration >= 2;
+    }
+
+    public int getDiscountPrice() {
+        return discountPolicy.applyDiscount(this);
     }
 
     @Override
@@ -48,7 +60,4 @@ public class StudyCafeSeatPass implements StudyCafePass{
         return price;
     }
 
-    public int getDiscountPrice() {
-        return (int) (this.price * this.discountRate);
-    }
 }

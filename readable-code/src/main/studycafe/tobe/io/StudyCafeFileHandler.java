@@ -2,9 +2,7 @@ package main.studycafe.tobe.io;
 
 import main.studycafe.tobe.model.locker.StudyCafeLockerPass;
 import main.studycafe.tobe.model.locker.StudyCafeLockerPasses;
-import main.studycafe.tobe.model.pass.StudyCafePassType;
-import main.studycafe.tobe.model.pass.StudyCafeSeatPasses;
-import main.studycafe.tobe.model.pass.StudyCafeSeatPass;
+import main.studycafe.tobe.model.pass.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,9 +21,9 @@ public class StudyCafeFileHandler {
                 StudyCafePassType studyCafePassType = StudyCafePassType.valueOf(values[0]);
                 int duration = Integer.parseInt(values[1]);
                 int price = Integer.parseInt(values[2]);
-                double discountRate = Double.parseDouble(values[3]);
+                DiscountPolicy discountPolicy = new OpenEventDiscountPolicy();
 
-                StudyCafeSeatPass studyCafeSeatPass = StudyCafeSeatPass.of(studyCafePassType, duration, price, discountRate);
+                StudyCafeSeatPass studyCafeSeatPass = StudyCafeSeatPass.of(studyCafePassType, duration, price, discountPolicy);
                 studyCafeSeatPasses.add(studyCafeSeatPass);
             }
 
