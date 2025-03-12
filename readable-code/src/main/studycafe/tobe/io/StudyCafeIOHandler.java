@@ -1,5 +1,6 @@
 package main.studycafe.tobe.io;
 
+import main.studycafe.tobe.model.pass.StudyCafePassOrder;
 import main.studycafe.tobe.model.locker.StudyCafeLockerPass;
 import main.studycafe.tobe.model.pass.StudyCafeSeatPass;
 import main.studycafe.tobe.model.pass.StudyCafePassType;
@@ -19,20 +20,12 @@ public class StudyCafeIOHandler {
         outputHandler.showAnnouncement();
     }
 
-    public void askPassTypeSelection() {
-        outputHandler.askPassTypeSelection();
-    }
-
     public void showPassListForSelection(List<StudyCafeSeatPass> passes) {
         outputHandler.showPassListForSelection(passes);
     }
 
-    public void showPassOrderSummary(StudyCafeSeatPass selectedPass) {
-        outputHandler.showPassOrderSummary(selectedPass, null);
-    }
-
-    public void showPassOrderSummary(StudyCafeSeatPass selectedPass, StudyCafeLockerPass lockerPass) {
-        outputHandler.showPassOrderSummary(selectedPass, lockerPass);
+    public void showPassOrderSummary(StudyCafePassOrder studyCafePassOrder) {
+        outputHandler.showPassOrderSummary(studyCafePassOrder);
     }
 
     public void showSimpleMessage(String message) {
