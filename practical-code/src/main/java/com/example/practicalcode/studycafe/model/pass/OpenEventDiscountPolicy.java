@@ -7,13 +7,13 @@ public class OpenEventDiscountPolicy implements DiscountPolicy {
         int price = pass.getPrice();
 
         if (pass.isTwelveWeeksPass()) {
-            return (int) (price * 0.85);
+            return (int) (price * 0.15);
         }
 
         if (pass.isWeeklyPassOverTwoWeeks()) {
-            return (int) (price * 0.9);
+            return (int) (price * 0.1);
         }
 
-        return price;
+        return 0;
     }
 }
